@@ -5,7 +5,7 @@ int main() {
     int masterChoice;
     int ch; 
 
-    // File pointers used for storage
+    
     FILE *file, *tempFile;
 
     // --- Admin Variables ---
