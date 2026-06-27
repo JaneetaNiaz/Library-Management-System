@@ -1,24 +1,25 @@
 #include <stdio.h>
 #include <string.h>
 
-int main() {
+int main() 
+{
     int masterChoice;
     int ch; 
 
     
     FILE *file, *tempFile;
 
-    // --- Admin Variables ---
+    // --- Admin  --
     char adminUsername[20], adminPassword[20];
     int memberID = 0;
     char memberName[50] = "";
 
-    // --- Librarian Variables ---
+    // --- Librarian  ---
     char libUsername[20], libPassword[20];
     int bookID = 0;
     char bookTitle[50] = "";
 
-    // --- Student Variables ---
+    // --- Student  ---
     char regName[50] = "", regPass[50] = "", regDept[50] = "";
     int regAge = 0, regID = 0;
     
@@ -31,7 +32,6 @@ int main() {
     int isFinePaid = 1;   
     int choice;           
 
-    // Load dynamic student state from file on startup (keeps track of books/fines)
     file = fopen("student_state.txt", "r");
     if (file != NULL) {
         fscanf(file, "%d,%d", &isIssued, &isFinePaid);
@@ -52,9 +52,8 @@ int main() {
             continue;
         }
 
-        // ---------------------------------------------------------------------
-        // PORTAL 1: ADMIN SYSTEM (Manages members.txt)
-        // ---------------------------------------------------------------------
+        // PORTAL 1: ADMIN SYSTEM 
+    
         if (masterChoice == 1) {
             printf("\n--- ADMIN LOGIN ---\n");
             printf("Enter Username: ");
@@ -86,7 +85,7 @@ int main() {
                         printf("Enter Member Name: ");
                         scanf("%49[^\n]", memberName); 
 
-                        // Open members file and append new record at the bottom
+                        
                         file = fopen("members.txt", "a");
                         if (file != NULL) {
                             fprintf(file, "%d,%s\n", memberID, memberName);
@@ -102,7 +101,7 @@ int main() {
                         printf("Enter Member ID to delete: ");
                         scanf("%d", &deleteID);
 
-                        // Twin-File Trick: Copy everything EXCEPT the deleted ID to temp.txt
+                        
                         file = fopen("members.txt", "r");
                         tempFile = fopen("temp.txt", "w");
                         
@@ -154,7 +153,7 @@ int main() {
                         printf("Enter New Name: ");
                         scanf("%49[^\n]", newName);
 
-                        // Twin-File Trick: Swap old name for new name during file copying
+                    
                         file = fopen("members.txt", "r");
                         tempFile = fopen("temp.txt", "w");
 
@@ -203,9 +202,9 @@ int main() {
             }
         }
 
-        // ---------------------------------------------------------------------
-        // PORTAL 2: LIBRARIAN SYSTEM (Manages books.txt)
-        // ---------------------------------------------------------------------
+        
+        // PORTAL 2: LIBRARIAN SYSTEM 
+    
         else if (masterChoice == 2) {
             printf("\n--- LIBRARIAN LOGIN ---\n");
             printf("Enter Username: ");
@@ -350,9 +349,9 @@ int main() {
             }
         }
 
-        // ---------------------------------------------------------------------
-        // PORTAL 3: STUDENT PORTAL (Manages students.txt & student_state.txt)
-        // ---------------------------------------------------------------------
+        
+        // PORTAL 3: STUDENT PORTAL 
+        
         else if (masterChoice == 3) {
             int exitStudentPortal = 0;
             
@@ -384,7 +383,7 @@ int main() {
                         printf("Enter Password: ");
                         scanf("%49s", regPass);
                         
-                        // Overwrites students.txt with the new single profile setup
+                        
                         file = fopen("students.txt", "w"); 
                         if (file != NULL) {
                             fprintf(file, "%s,%d,%s,%d,%s\n", regName, regAge, regDept, regID, regPass);
@@ -399,7 +398,7 @@ int main() {
                         if (file == NULL) {
                             printf("No account found. Please sign up first.\n");
                         } else {
-                            // Fetch account details directly out of file storage
+                        
                             fscanf(file, "%49[^,],%d,%49[^,],%d,%49s\n", regName, &regAge, regDept, &regID, regPass);
                             fclose(file);
 
@@ -444,7 +443,7 @@ int main() {
                         printf("\nEnter Book name to search: ");
                         scanf("%49[^\n]", searchBook); 
                         
-                        // Scans the active librarian book file records
+                    
                         int bookFoundInCatalog = 0;
                         file = fopen("books.txt", "r");
                         if (file != NULL) {
@@ -458,7 +457,7 @@ int main() {
                             fclose(file);
                         }
 
-                        // Code fallback match if file catalog is empty
+                        
                         if (!bookFoundInCatalog && strcasecmp(searchBook, "harry potters") == 0) {
                             strcpy(libraryBook, "harry potters");
                             bookFoundInCatalog = 1;
@@ -515,7 +514,7 @@ int main() {
                         printf("Invalid choice.\n");
                     }
 
-                    // Save the active state of fines/issues to file storage
+                
                     file = fopen("student_state.txt", "w");
                     if (file != NULL) {
                         fprintf(file, "%d,%d", isIssued, isFinePaid);
@@ -525,9 +524,9 @@ int main() {
             }
         }
 
-        // ---------------------------------------------------------------------
+    
         // PORTAL 4: SYSTEM SHUTDOWN
-        // ---------------------------------------------------------------------
+        
         else if (masterChoice == 4) {
             printf("\nShutting down the library system. Goodbye!\n");
             break;
@@ -536,6 +535,7 @@ int main() {
             printf("Invalid choice. Please select between 1 and 4.\n");
         }
     }
-
+return 0;
+}
     return 0;
 }
